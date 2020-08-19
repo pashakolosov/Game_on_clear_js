@@ -1,6 +1,7 @@
 const cvs = document.getElementById('canvas')
 const ctx = cvs.getContext('2d')
 
+
 var bird = new Image();
 var bg = new Image(); // Создание объекта
 var fg = new Image(); // Создание объекта
@@ -22,6 +23,24 @@ score_audio.src = "../audio/score.mp3"; // Аналогично
 
 let gap = 90
 
+
+
+//block
+let pipe = []
+
+pipe[0] = {
+    x: cvs.width,
+    y: 0
+}
+
+document.addEventListener('keydown', moveUp)
+
+function moveUp() {
+    yPos -= 35
+    fly.play()
+    console.log(xPos, yPos)
+}
+
 //Bird position
 let xPos = 10
 let yPos = 150
@@ -30,15 +49,29 @@ let grav = 1
 function draw() {
     ctx.drawImage(bg, 0, 0)
 
-    ctx.drawImage(pipeUp, 100, 0)
-    ctx.drawImage(pipeBottom, 100, 0 + pipeUp.height + gap)
-
     ctx.drawImage(fg, 0, cvs.height - fg.height)
 
     ctx.drawImage(bird, xPos, yPos)
 
     yPos += grav
 
+
+    for(let i = 0; i < pipe.length; i++) {
+        ctx.drawImage(pipeUp, pipe[i].x, pipe[i].y)
+        ctx.drawImage(pipeBottom, pipe[i].x, pipe[i].y + pipeUp.height + gap)
+
+        pipe[i].x--
+
+        if (pipe[i].x == 125) {
+            pipe.push({
+                x: cvs.width,
+                y: Math.floor(Math.random() * pipeUp.height) - pipeUp.height
+            })
+        }
+    }
+    
+
+    
     requestAnimationFrame(draw)
 }
 
