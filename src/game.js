@@ -19,3 +19,27 @@ var score_audio = new Audio(); // Создание аудио объекта
 
 fly.src = "../audio/fly.mp3"; // Указание нужной записи
 score_audio.src = "../audio/score.mp3"; // Аналогично
+
+let gap = 90
+
+//Bird position
+let xPos = 10
+let yPos = 150
+let grav = 1
+
+function draw() {
+    ctx.drawImage(bg, 0, 0)
+
+    ctx.drawImage(pipeUp, 100, 0)
+    ctx.drawImage(pipeBottom, 100, 0 + pipeUp.height + gap)
+
+    ctx.drawImage(fg, 0, cvs.height - fg.height)
+
+    ctx.drawImage(bird, xPos, yPos)
+
+    yPos += grav
+
+    requestAnimationFrame(draw)
+}
+
+pipeBottom.onload = draw 
